@@ -34,7 +34,7 @@ int main() {
     // Initialize shared variable "total" to 0
     total->value = 0;
 
-    // Create the first child process (process1) to increment the counter to 270547
+    // Create the first child process (process1) to increment the counter to 100000
     if ((pid1 = fork()) == 0) {
         while (total->value < 100000) {
             total->value++;  // Increment the shared memory value
@@ -43,7 +43,7 @@ int main() {
         exit(0);  // Child exits after completing its task
     }
 
-    // Create the second child process (process2) to increment the counter to 347860
+    // Create the second child process (process2) to increment the counter to 200000
     if ((pid2 = fork()) == 0) {
         while (total->value < 200000) {
             total->value++;  // Increment the shared memory value
@@ -52,7 +52,7 @@ int main() {
         exit(0);  // Child exits after completing its task
     }
 
-    // Create the third child process (process3) to increment the counter to 400001
+    // Create the third child process (process3) to increment the counter to 300000
     if ((pid3 = fork()) == 0) {
         while (total->value < 300000) {
             total->value++;  // Increment the shared memory value
