@@ -14,6 +14,34 @@ typedef struct {
     int value;
 } shared_memory;
 
+void process1(shared_memory *total) {
+    while (total->value < 100000) {
+        total->value++;  // Increment the shared memory value
+    }
+    printf("From Process 1: counter = %d.\n", total->value);
+}
+
+void process2(shared_memory *total) {
+    while (total->value < 200000) {
+        total->value++;  // Increment the shared memory value
+    }
+    printf("From Process 2: counter = %d.\n", total->value);
+}
+
+void process3(shared_memory *total) {
+    while (total->value < 300000) {
+        total->value++;  // Increment the shared memory value
+    }
+    printf("From Process 3: counter = %d.\n", total->value);
+}
+
+void process4(shared_memory *total) {
+    while (total->value < 500000) {
+        total->value++;  // Increment the shared memory value
+    }
+    printf("From Process 4: counter = %d.\n", total->value);
+}
+
 int main() {
     int shmid, pid1, pid2, pid3, pid4, status;
     shared_memory *total;
@@ -34,39 +62,27 @@ int main() {
     // Initialize shared variable "total" to 0
     total->value = 0;
 
-    // Create the first child process (process1) to increment the counter to 100000
+    // Create the first child process (process1)
     if ((pid1 = fork()) == 0) {
-        while (total->value < 100000) {
-            total->value++;  // Increment the shared memory value
-        }
-        printf("From Process 1: counter = %d.\n", total->value);
+        process1(total);
         exit(0);  // Child exits after completing its task
     }
 
-    // Create the second child process (process2) to increment the counter to 200000
+    // Create the second child process (process2)
     if ((pid2 = fork()) == 0) {
-        while (total->value < 200000) {
-            total->value++;  // Increment the shared memory value
-        }
-        printf("From Process 2: counter = %d.\n", total->value);
+        process2(total);
         exit(0);  // Child exits after completing its task
     }
 
-    // Create the third child process (process3) to increment the counter to 300000
+    // Create the third child process (process3)
     if ((pid3 = fork()) == 0) {
-        while (total->value < 300000) {
-            total->value++;  // Increment the shared memory value
-        }
-        printf("From Process 3: counter = %d.\n", total->value);
+        process3(total);
         exit(0);  // Child exits after completing its task
     }
 
-    // Create the fourth child process (process4) to increment the counter to 500000
+    // Create the fourth child process (process4)
     if ((pid4 = fork()) == 0) {
-        while (total->value < 500000) {
-            total->value++;  // Increment the shared memory value
-        }
-        printf("From Process 4: counter = %d.\n", total->value);
+        process4(total);
         exit(0);  // Child exits after completing its task
     }
 
@@ -98,4 +114,3 @@ int main() {
     printf("End of Program.\n");
     return 0;
 }
-
