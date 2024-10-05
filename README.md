@@ -16,7 +16,6 @@ First, open a terminal and navigate to the directory where the project is locate
 
 cd ~/cs3113-project
 Make sure that the project1.c file is in this directory by listing the files:
-
 ls
 You should see project1.c in the output.
 
