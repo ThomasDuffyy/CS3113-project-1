@@ -9,37 +9,38 @@
 
 #define SHMKEY ((key_t) 1497)
 
-// Define shared memory structure
+// Define shared memory structure to store final values
 typedef struct {
-    int value;
+    int total;
+    int counters[4];  // To store the final counter values for each process
 } shared_memory;
 
 void process1(shared_memory *total) {
-    while (total->value < 100000) {
-        total->value++;  // Increment the shared memory value
+    while (total->total < 100000) {
+        total->total++;  // Increment the shared memory value
     }
-    printf("From Process 1: counter = %d.\n", total->value);
+    total->counters[0] = total->total;  // Store final value for process 1
 }
 
 void process2(shared_memory *total) {
-    while (total->value < 200000) {
-        total->value++;  // Increment the shared memory value
+    while (total->total < 200000) {
+        total->total++;  // Increment the shared memory value
     }
-    printf("From Process 2: counter = %d.\n", total->value);
+    total->counters[1] = total->total;  // Store final value for process 2
 }
 
 void process3(shared_memory *total) {
-    while (total->value < 300000) {
-        total->value++;  // Increment the shared memory value
+    while (total->total < 300000) {
+        total->total++;  // Increment the shared memory value
     }
-    printf("From Process 3: counter = %d.\n", total->value);
+    total->counters[2] = total->total;  // Store final value for process 3
 }
 
 void process4(shared_memory *total) {
-    while (total->value < 500000) {
-        total->value++;  // Increment the shared memory value
+    while (total->total < 500000) {
+        total->total++;  // Increment the shared memory value
     }
-    printf("From Process 4: counter = %d.\n", total->value);
+    total->counters[3] = total->total;  // Store final value for process 4
 }
 
 int main() {
@@ -59,8 +60,11 @@ int main() {
         exit(0);
     }
 
-    // Initialize shared variable "total" to 0
-    total->value = 0;
+    // Initialize shared variable "total" and process counters to 0
+    total->total = 0;
+    for (int i = 0; i < 4; i++) {
+        total->counters[i] = 0;
+    }
 
     // Create the first child process (process1)
     if ((pid1 = fork()) == 0) {
@@ -86,17 +90,22 @@ int main() {
         exit(0);  // Child exits after completing its task
     }
 
-    // Parent waits for all child processes to finish and prints their PIDs
+    // Parent waits for all child processes to finish
     waitpid(pid1, &status, 0);
-    printf("Child with pid %d has just exited.\n", pid1);
-
     waitpid(pid2, &status, 0);
-    printf("Child with pid %d has just exited.\n", pid2);
-
     waitpid(pid3, &status, 0);
-    printf("Child with pid %d has just exited.\n", pid3);
-
     waitpid(pid4, &status, 0);
+
+    // After all child processes have finished, print the counters in the correct order
+    printf("From Process 1: counter = %d.\n", total->counters[0]);
+    printf("From Process 2: counter = %d.\n", total->counters[1]);
+    printf("From Process 3: counter = %d.\n", total->counters[2]);
+    printf("From Process 4: counter = %d.\n", total->counters[3]);
+
+    // Now print the child exit messages in the order they exited
+    printf("Child with pid %d has just exited.\n", pid1);
+    printf("Child with pid %d has just exited.\n", pid2);
+    printf("Child with pid %d has just exited.\n", pid3);
     printf("Child with pid %d has just exited.\n", pid4);
 
     // Detach the shared memory from the parent process
