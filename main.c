@@ -103,10 +103,10 @@ int main() {
     printf("From Process 4: counter = %d.\n", total->counters[3]);
 
     // Now print the child exit messages in the order they exited
-    printf("Child with pid %d has just exited.\n", pid1);
-    printf("Child with pid %d has just exited.\n", pid2);
-    printf("Child with pid %d has just exited.\n", pid3);
-    printf("Child with pid %d has just exited.\n", pid4);
+    printf("Child with ID: %d has just exited.\n", pid1);
+    printf("Child with ID: %d has just exited.\n", pid2);
+    printf("Child with ID: %d has just exited.\n", pid3);
+    printf("Child with ID: %d has just exited.\n", pid4);
 
     // Detach the shared memory from the parent process
     if (shmdt(total) == -1) {
