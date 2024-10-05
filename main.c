@@ -71,29 +71,31 @@ int main() {
         process1(total);
         exit(0);  // Child exits after completing its task
     }
+    // Parent waits for the first child process to finish
+    waitpid(pid1, &status, 0);
 
     // Create the second child process (process2)
     if ((pid2 = fork()) == 0) {
         process2(total);
         exit(0);  // Child exits after completing its task
     }
+    // Parent waits for the second child process to finish
+    waitpid(pid2, &status, 0);
 
     // Create the third child process (process3)
     if ((pid3 = fork()) == 0) {
         process3(total);
         exit(0);  // Child exits after completing its task
     }
+    // Parent waits for the third child process to finish
+    waitpid(pid3, &status, 0);
 
     // Create the fourth child process (process4)
     if ((pid4 = fork()) == 0) {
         process4(total);
         exit(0);  // Child exits after completing its task
     }
-
-    // Parent waits for all child processes to finish
-    waitpid(pid1, &status, 0);
-    waitpid(pid2, &status, 0);
-    waitpid(pid3, &status, 0);
+    // Parent waits for the fourth child process to finish
     waitpid(pid4, &status, 0);
 
     // After all child processes have finished, print the counters in the correct order
