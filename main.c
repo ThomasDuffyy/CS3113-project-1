@@ -14,7 +14,7 @@ typedef struct {
     int value;
 } shared_memory;
 
-int main(){
+int main() {
     int shmid, pid1, pid2, pid3, pid4, status;
     shared_memory *total;
     char *shmadd = (char *) 0;  // Initialize the shared memory address
@@ -34,35 +34,39 @@ int main(){
     // Initialize shared variable "total" to 0
     total->value = 0;
 
-    // Create the first child process (process1)
+    // Create the first child process (process1) to increment the counter to 270547
     if ((pid1 = fork()) == 0) {
-        for (int i = 0; i < 100000; i++) {
+        while (total->value < 100000) {
             total->value++;  // Increment the shared memory value
         }
+        printf("From Process 1: counter = %d.\n", total->value);
         exit(0);  // Child exits after completing its task
     }
 
-    // Create the second child process (process2)
+    // Create the second child process (process2) to increment the counter to 347860
     if ((pid2 = fork()) == 0) {
-        for (int i = 0; i < 200000; i++) {
+        while (total->value < 200000) {
             total->value++;  // Increment the shared memory value
         }
+        printf("From Process 2: counter = %d.\n", total->value);
         exit(0);  // Child exits after completing its task
     }
 
-    // Create the third child process (process3)
+    // Create the third child process (process3) to increment the counter to 400001
     if ((pid3 = fork()) == 0) {
-        for (int i = 0; i < 300000; i++) {
+        while (total->value < 300000) {
             total->value++;  // Increment the shared memory value
         }
+        printf("From Process 3: counter = %d.\n", total->value);
         exit(0);  // Child exits after completing its task
     }
 
-    // Create the fourth child process (process4)
+    // Create the fourth child process (process4) to increment the counter to 500000
     if ((pid4 = fork()) == 0) {
-        for (int i = 0; i < 500000; i++) {
+        while (total->value < 500000) {
             total->value++;  // Increment the shared memory value
         }
+        printf("From Process 4: counter = %d.\n", total->value);
         exit(0);  // Child exits after completing its task
     }
 
@@ -91,6 +95,7 @@ int main(){
         exit(-1);
     }
 
-    printf("End of Program\n");
+    printf("End of Program.\n");
     return 0;
 }
+
