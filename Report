@@ -1,1 +1,54 @@
 
+Performance Evaluation Report: Cooperative Processes with Shared Memory  
+
+Thomas Duffy 
+
+ 
+
+Abstract 
+
+This report outlines the development and performance evaluation of a program that creates four cooperating child processes. Each process increments a shared variable using shared memory, synchronized with semaphores. The key challenges, such as race conditions and proper process synchronization, are addressed, and the final solution ensures correct operation with proper resource cleanup. 
+
+ 
+
+1. Introduction 
+
+The project required four child processes to modify a shared variable (total) cooperatively, each incrementing the value by a defined amount (100,000, 200,000, 300,000, and 500,000). The parent process waits for all child processes to complete, prints their results, and manages shared memory and semaphore cleanup. 
+
+ 
+
+2. Challenges and Solutions 
+
+Initial Issues 
+
+Initially, the program faced race conditions due to multiple processes modifying the shared variable simultaneously without synchronization. This led to unpredictable results. 
+
+ Implementing Shared Memory 
+
+Shared memory was introduced using shmget() and shmat(), allowing all processes to access the same memory. However, the lack of synchronization still caused issues with simultaneous access to the shared variable. 
+
+ Introducing Semaphores 
+
+Semaphores were added to synchronize access to the shared memory. Each process had to lock (wait on) the semaphore before modifying the shared variable and unlock (signal) it afterward. This eliminated race conditions and ensured proper cooperation between the processes. 
+
+Parent Process Management 
+
+The parent process used waitpid() to ensure it waited for each child to finish execution. After all processes were completed, the parent printed the results in order, detached shared memory, and removed the semaphore, ensuring proper cleanup of resources. 
+
+ 
+
+3. Key Fixes 
+
+Semaphores were used to synchronize access to the shared variable, ensuring only one process modified it at a time. 
+
+Shared memory was used to allow all processes to work on the same total variable. 
+
+Process management ensured the parent waited for each child to finish and printed the results in the correct order. 
+
+Memory and resource cleanup was handled by detaching shared memory and removing the semaphore after the processes finished. 
+
+ 
+
+4. Conclusion 
+
+This project successfully implemented cooperating processes using shared memory and semaphores. The key challenge of managing concurrent access was resolved with semaphores, and the parent process ensured correct output and cleanup. The final solution met all the project requirements, providing a robust implementation of process synchronization. 
